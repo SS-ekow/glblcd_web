@@ -11,10 +11,15 @@
     <title>Sign In page</title>
   </head>
   <body>
-    <div class="container" >
-      <h2>Welcome. Sign In to continue.</h2>
+    <div class="container position-absolute top-50 start-50 translate-middle" >
+      
       <form method = "POST" action = "/authorize">
-        <div class="mb-3">
+        <div class="container-sm shadow-lg">
+          <h2>
+            Welcome.<br>
+            <small class="text-muted">Please sign in to continue.</small>
+
+          </h2>
           <label for="username" class="form-label">Username</label>
           <input type="text" class="form-control" id="username" name = "username" aria-describedby="emailHelp">
           <label for="password" class="form-label">Password</label>
