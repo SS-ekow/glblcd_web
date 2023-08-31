@@ -6,7 +6,8 @@ users_database = {
     "ekow" : "ekow1",
     "sackey" : "sackey1",
     "edem" : "edem1",
-    "user" : "user1"
+    "user" : "user1",
+    "2high2cry" : "canidiealready123",
 }
 
 @app.route('/')
@@ -21,9 +22,12 @@ def authorize():
     
     if username in users_database.keys():
         if users_database[username] == password:
-            return render_template('landingPage.html')
+            return render_template('landingPage.html', username = username)
         else:
-            return render_template('errorPage.html')
+            return render_template('errorPage.html', error = "Wrong password.")
+        
+    else:
+        return render_template('errorPage.html', error = "Username does not exist.")
         
 
 @app.route('/logout')
