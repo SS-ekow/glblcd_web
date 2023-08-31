@@ -1,9 +1,8 @@
-from flask import Flask, render_template
-
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-users_databse = {
+users_database = {
     "ekow" : "ekow1",
     "sackey" : "sackey1",
     "edem" : "edem1",
@@ -13,6 +12,24 @@ users_databse = {
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/authorize', methods=['GET', 'POST'])
+def authorize():
+    
+    username = request.form.get('username')
+    password = request.form.get('password')
+    
+    if username in users_database.keys():
+        if users_database[username] == password:
+            return render_template('landingPage.html')
+        else:
+            return render_template('errorPage.html')
+        
+
+@app.route('/logout')
+def logout():
+    return render_template('index.html')
+    
 
 @app.route('/whereami')
 def whereami():
