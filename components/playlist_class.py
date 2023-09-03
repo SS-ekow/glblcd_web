@@ -2,8 +2,9 @@ from collections import deque
 from components.song_class import Song
     
 class MP3Playlist:
-    def __init__(self):
+    def __init__(self, name):
         self.playlist = deque()
+        self.name = name
 
     def load_playlist(self, file_path):
         with open(file_path, 'r') as file:

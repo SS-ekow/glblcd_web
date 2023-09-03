@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, url_for, redirect
 from components.playlist_class import MP3Playlist
 from components.song_class import Song
+from forms import RegistrationForm, createPlaylistForm, createSongForm
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = '55af5c09aad400be122a'
 
 users_database = {
     "ekow" : "ekow1",
@@ -12,9 +15,10 @@ users_database = {
     "2high2cry" : "canidiealready123",
 }
 
-playlist = MP3Playlist()
+# playlist = MP3Playlist(name= )
 
 @app.route('/')
+@app.route('/home')
 def index():
     return render_template('index.html')
 
@@ -32,7 +36,17 @@ def authorize():
         
     else:
         return render_template('errorPage.html', error = "Username does not exist.")
+       
         
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        users_database[form.username.data] = form.password.data
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('index'))
+    return render_template('register.html', title='Register', form=form)
+
 
 @app.route('/logout')
 def logout():
@@ -40,6 +54,7 @@ def logout():
 
 @app.route('/createPlaylist', methods=['GET', 'POST'])
 def create_playlist():
+    playlist_form = createPlaylistForm()
     return render_template('createPlaylist.html')
     
     
@@ -49,9 +64,6 @@ def new_song():
 
 
 
-# def create_song(song_title, artist_name, release_year, duration, genre):
-#     song = Song(song_title, artist_name, release_year, duration, genre)
-#     return ""
 
 @app.route('/load')
 def songs_page():
@@ -59,9 +71,7 @@ def songs_page():
 
 
 
-# def add_song(song, name):
-#     name.add_song(song)
-#     return f'{song} added to playlist'
+
 
 @app.route('/clear')
 def clear_playlist():
@@ -74,10 +84,6 @@ def display():
     return render_template('display.html')
 
 
-
-# def display_all(name):
-#     name.display_all()
-#     return ""
 
 if __name__ == '__main__':
     app.run(debug= True, host= '0.0.0.0')
